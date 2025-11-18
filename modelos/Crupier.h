@@ -8,6 +8,8 @@ class Crupier : public Participante {
         Crupier();
 
         void empezarNuevaRonda(Mazo& mazo, Jugador& jugador);
-        void darCartaAJugador(Jugador& jugador, Mazo& mazo);
+        Carta getSiguienteCarta(Mazo& mazo);
+        void darCartaAJugador(Jugador& jugador, Mazo& mazo, size_t cantidad);
+        void darCartaACrupier(Mazo& mazo, size_t cantidad);
         void jugarTurno(Mazo& mazo);
 };
