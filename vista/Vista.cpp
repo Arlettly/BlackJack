@@ -32,18 +32,18 @@ void Vista::mostrarTexto(const std::string& texto) const {
     std::cout << texto << "\n";
 }
 
-void Vista::añadirCartaACola(
-    Mano mano,
-    const std::string& valor,
-    const std::string& palo,
-    Color colorEnum)
+void Vista::añadirCartaACola(Mano mano, const std::string& valor, const std::string& palo, Color colorEnum)
 {
     std::vector<std::string> (&cola)[4] = (mano == JUGADOR) ? colaCartasJugador : colaCartasCrupier;
     std::string color = (colorEnum == NEGRO) ? colNegro : colRojo;
 
-    cola[SUPERIOR].push_back("╭" + color + valor + palo + colReset + "──╮ ");
+    // Ajustar el tamaño de los bordes si el valor es de 2 digitos (valor 10)
+    std::string bordeSup = (valor.length() > 1) ? "─╮ " : "──╮ ";
+    std::string bordeInf = (valor.length() > 1) ? "╰─" : "╰──";
+
+    cola[SUPERIOR].push_back("╭" + color + valor + palo + colReset + bordeSup);
     cola[MEDIO].push_back("│    │ ");
-    cola[INFERIOR].push_back("╰──" + color + valor + palo + colReset + "╯ ");
+    cola[INFERIOR].push_back(bordeInf + color + valor + palo + colReset + "╯ ");
 }
 
 void Vista::imprimirCola(const std::vector<std::string>& cola) {
