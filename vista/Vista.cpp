@@ -37,13 +37,23 @@ void Vista::añadirCartaACola(Mano mano, const std::string& valor, const std::st
     std::vector<std::string> (&cola)[4] = (mano == JUGADOR) ? colaCartasJugador : colaCartasCrupier;
     std::string color = (colorEnum == NEGRO) ? colNegro : colRojo;
 
-    // Ajustar el tamaño de los bordes si el valor es de 2 digitos (valor 10)
-    std::string bordeSup = (valor.length() > 1) ? "─╮ " : "──╮ ";
-    std::string bordeInf = (valor.length() > 1) ? "╰─" : "╰──";
+    if (cola[SUPERIOR].empty()) {
+        // Ajustar el tamaño de los bordes si el valor es de 2 digitos (valor 10)
+        std::string bordeSup = (valor.length() > 1) ? "─╮" : "──╮";
+        std::string bordeInf = (valor.length() > 1) ? "╰─" : "╰──";
 
-    cola[SUPERIOR].push_back("╭" + color + valor + palo + colReset + bordeSup);
-    cola[MEDIO].push_back("│    │ ");
-    cola[INFERIOR].push_back(bordeInf + color + valor + palo + colReset + "╯ ");
+        cola[SUPERIOR].push_back("╭" + color + valor + palo + colReset + bordeSup);
+        cola[MEDIO].push_back("│    │");
+        cola[INFERIOR].push_back(bordeInf + color + valor + palo + colReset + "╯");
+    }
+
+    else {
+        std::string bordeInf = (valor.length() > 1) ? "" : "╶";
+
+        cola[SUPERIOR].push_back("╶──╮");
+        cola[MEDIO].push_back("   │");
+        cola[INFERIOR].push_back(bordeInf + color + valor + palo + colReset + "╯");
+    }
 }
 
 void Vista::imprimirCola(const std::vector<std::string>& cola) {
