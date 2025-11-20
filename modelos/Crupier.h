@@ -5,7 +5,7 @@
 
 class Crupier : public Participante {
     public:
-        Crupier(Mazo& pMazo);
+        Crupier(Mazo& pMazo, Vista& pVista);
 
         void empezarNuevaRonda(Jugador& jugador);
         Carta getSiguienteCarta();

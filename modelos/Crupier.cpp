@@ -1,6 +1,6 @@
 #include "Crupier.h"
 
-Crupier::Crupier(Mazo& pMazo) : Participante(), mazo{pMazo} {}
+Crupier::Crupier(Mazo& pMazo, Vista& pVista) : mazo{pMazo}, Participante(pVista) {}
 
 void Crupier::empezarNuevaRonda(Jugador& jugador) {
     limpiarMano();
