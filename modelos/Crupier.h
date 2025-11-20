@@ -5,11 +5,14 @@
 
 class Crupier : public Participante {
     public:
-        Crupier();
+        Crupier(Mazo& pMazo);
 
-        void empezarNuevaRonda(Mazo& mazo, Jugador& jugador);
-        Carta getSiguienteCarta(Mazo& mazo);
-        void darCartaAJugador(Jugador& jugador, Mazo& mazo, size_t cantidad);
-        void darCartaACrupier(Mazo& mazo, size_t cantidad);
-        void jugarTurno(Mazo& mazo);
+        void empezarNuevaRonda(Jugador& jugador);
+        Carta getSiguienteCarta();
+        void darCartaAJugador(Jugador& jugador, size_t cantidad);
+        void darCartaACrupier(size_t cantidad);
+        void jugarTurno();
+
+    private:
+        Mazo mazo;
 };

@@ -1,37 +1,37 @@
 #include "Crupier.h"
 
-Crupier::Crupier() : Participante() {}
+Crupier::Crupier(Mazo& pMazo) : Participante(), mazo{pMazo} {}
 
-void Crupier::empezarNuevaRonda(Mazo& mazo, Jugador& jugador) {
+void Crupier::empezarNuevaRonda(Jugador& jugador) {
     limpiarMano();
     jugador.limpiarMano();
     
     // Repartir 2 cartas al jugador y 2 al crupier
 
-    darCartaAJugador(jugador, mazo, 2);
-    darCartaACrupier(mazo, 2);
+    darCartaAJugador(jugador, 2);
+    darCartaACrupier(2);
 }
 
-Carta Crupier::getSiguienteCarta(Mazo& mazo) {
+Carta Crupier::getSiguienteCarta() {
     mazo.avanzarIndice();
     return mazo.cartasEnMazo[mazo.getIndiceCartaActual()];
 }
 
-void Crupier::darCartaAJugador(Jugador& jugador, Mazo& mazo, size_t cantidad) {
+void Crupier::darCartaAJugador(Jugador& jugador, size_t cantidad) {
     for (int i = 0; i < cantidad; i++) {
-        jugador.recibirCarta(getSiguienteCarta(mazo));
+        jugador.recibirCarta(getSiguienteCarta());
     }
 }
 
-void Crupier::darCartaACrupier(Mazo& mazo, size_t cantidad) {
+void Crupier::darCartaACrupier(size_t cantidad) {
         for (int i = 0; i < cantidad; i++) {
-        recibirCarta(getSiguienteCarta(mazo));
+        recibirCarta(getSiguienteCarta());
     }
 }
 
-void Crupier::jugarTurno(Mazo& mazo) {
+void Crupier::jugarTurno() {
     // El crupier debe pedir carta si tiene menos de 17
     while (getValorDeMano() < 17) {
-        recibirCarta(getSiguienteCarta(mazo));
+        recibirCarta(getSiguienteCarta());
     }
 }
