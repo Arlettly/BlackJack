@@ -1,6 +1,6 @@
 #include "Participante.h"
 
-Participante::Participante() {};
+Participante::Participante(Vista& pVista) : vista{pVista} {};
 
 void Participante::recibirCarta(const Carta& carta) {
     mano.push_back(carta);

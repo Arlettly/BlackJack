@@ -1,11 +1,13 @@
 #pragma once
 
-#include "Carta.h"
 #include <vector>
+
+#include "Carta.h"
+#include "Vista.h"
 
 class Participante {
     public:
-        Participante();
+        Participante(Vista& pVista);
 
         void recibirCarta(const Carta& carta);
         void limpiarMano();
@@ -16,6 +18,9 @@ class Participante {
         int getValorDeMano() const;
         size_t getConteoDeCartas() const;
         const std::vector<Carta>& getMano() const;
+
+    private:
+        Vista& vista;
 
     protected:
         std::vector<Carta> mano;

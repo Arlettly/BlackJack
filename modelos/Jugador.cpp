@@ -1,4 +1,4 @@
 #include "Jugador.h"
 #include <iostream>
 
-Jugador::Jugador() : Participante() {}
+Jugador::Jugador(Vista& pVista) : Participante(pVista) {}

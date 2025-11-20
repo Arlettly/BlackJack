@@ -4,5 +4,5 @@
 
 class Jugador : public Participante {
     public:
-        Jugador();
+        Jugador(Vista& pVista);
 };
