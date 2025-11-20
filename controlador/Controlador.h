@@ -4,7 +4,7 @@
 
 class Controlador {
     public:
-        Controlador(Vista& pVista) : vista(vista) {};
+        Controlador(Vista& pVista);
 
         void obtenerEleccionMenu() const;
         void obtenerAccionJugador() const;
