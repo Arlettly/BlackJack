@@ -5,7 +5,7 @@
 
 #include "Carta.h"
 
-enum Mano { JUGADOR, CRUPIER }; // Enum para elegir entre la cola de jugador o crupier
+enum Mano { JUGADOR, CRUPIER }; // Enum para elegir entre la cola de jugador o crupier en el metodo de Vista
 
 class Vista {
     public:
