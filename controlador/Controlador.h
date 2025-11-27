@@ -48,7 +48,7 @@ class Controlador {
     public:
         Controlador(Vista& pVista);
 
-        void obtenerEleccionMenu() const;
+        int obtenerEleccionMenu(int opcionMin, int opcionMax) const;
         void obtenerAccionJugador() const;
 
     private:
