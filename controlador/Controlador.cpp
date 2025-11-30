@@ -69,7 +69,6 @@ std::string Controlador::getNombreJugador(size_t charMin, size_t charMax) const 
             return nombre;
 
             else {
-                vista.limpiarPantalla();
                 vista.mostrarTitulo();
                 vista.mostrarTexto("Solo nombres entre " + std::to_string(charMin) + 
                                    " y " + std::to_string(charMax) + " letras", "\e[1;30m");
@@ -80,7 +79,6 @@ std::string Controlador::getNombreJugador(size_t charMin, size_t charMax) const 
             std::cin.clear();
             limpiarBuffer();
 
-            vista.limpiarPantalla();
             vista.mostrarTitulo();
             vista.mostrarTexto("Invalido", "\e[1;31m");
         }
