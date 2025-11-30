@@ -61,22 +61,21 @@ void Vista::mostrarGameData(const std::string& nombre, int dinero, int apuesta) 
 }
 
 void Vista::mostrarPantallaPrincipal() const {
-    limpiarPantalla();
     mostrarTitulo();
     mostrarMenuPrincipal();
 }
 
 void Vista::mostrarPantallaApuesta(const std::string& nombre, int dinero, int apuesta) {
-    limpiarPantalla();
     mostrarTitulo();
     mostrarGameData(nombre, dinero, apuesta);
     mostrarMenuApuesta();
 }
 
-void Vista::mostrarPantallaJuego() {
-    limpiarPantalla();
-    imprimirMano(CRUPIER);
-    imprimirMano(JUGADOR);
+void Vista::mostrarPantallaJuego(const std::string& nombre, int dinero, int apuesta, const std::string& valorJugador, const std::string& valorCrupier) {
+    mostrarTitulo();
+    mostrarGameData(nombre, dinero, apuesta);
+    imprimirMano(CRUPIER, valorCrupier);
+    imprimirMano(JUGADOR, valorJugador);
 }
 
 void Vista::solicitarInput(const std::string& mensaje) const {
@@ -113,8 +112,8 @@ void Vista::añadirCartaACola(Mano mano, const std::string& valor, const std::st
 
     if (esPrimeraCarta) {
         // Ajustar el tamaño de los bordes si el valor es de 2 digitos (valor de 10)
-        std::string bordeSup = esDobleDigito ? "─╮" : "──╮";
-        std::string bordeInf = esDobleDigito ? "╰─" : "╰──";
+        const std::string bordeSup = esDobleDigito ? "─╮" : "──╮";
+        const std::string bordeInf = esDobleDigito ? "╰─" : "╰──";
 
         cola[SUPERIOR].push_back("╭" + color + valor + palo + colReset + bordeSup);
         cola[MEDIO].push_back("│    │");
@@ -122,7 +121,7 @@ void Vista::añadirCartaACola(Mano mano, const std::string& valor, const std::st
     }
 
     else {
-        std::string bordeInf = esDobleDigito ? "" : "╶";
+        const std::string bordeInf = esDobleDigito ? "" : "╶";
 
         cola[SUPERIOR].push_back("╶──╮");
         cola[MEDIO].push_back("   │");
@@ -148,13 +147,18 @@ void Vista::limpiarColas() {
     }
 }
 
-void Vista::imprimirMano(Mano mano) {
+void Vista::imprimirMano(Mano mano, const std::string& valor) {
     std::vector<std::string> (&cola)[3] = (mano == JUGADOR) ? colaCartasJugador : colaCartasCrupier;
 
-    imprimirCola(cola[SUPERIOR]);
+    bool esDobleDigito = (valor.length() > 1);
 
-    for (int i = 0; i < 3; i++)
-        imprimirCola(cola[MEDIO]);
+    const std::string valorConSangria = esDobleDigito ? "               " : "                ";
 
-    imprimirCola(cola[INFERIOR]);
+    std::cout << valorConSangria << valor << " "; imprimirCola(cola[SUPERIOR]);
+
+    for (int i = 0; i < 3; i++) {
+        std::cout << sangriaCartas; imprimirCola(cola[MEDIO]);
+    }
+
+    std::cout << sangriaCartas; imprimirCola(cola[INFERIOR]);
 }

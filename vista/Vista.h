@@ -62,7 +62,7 @@ class Vista {
         // Pantallas
         void mostrarPantallaPrincipal() const;
         void mostrarPantallaApuesta(const std::string& nombre, int dinero, int apuesta);
-        void mostrarPantallaJuego();
+        void mostrarPantallaJuego(const std::string& nombre, int dinero, int apuesta, const std::string& valorJugador, const std::string& valorCrupier);
         
         // Utils
         void solicitarInput(const std::string& mensaje) const;
@@ -78,7 +78,7 @@ class Vista {
         bool esColaVacia(std::vector<std::string> (&cola)[3]) const;
         void limpiarColas();
 
-        void imprimirMano(Mano mano);
+        void imprimirMano(Mano mano, const std::string& valor);
 
     private:
         // Colores ANSI
@@ -89,6 +89,7 @@ class Vista {
         const std::string colReset = "\e[0m";
 
         const std::string sangria = "          ";
+        const std::string sangriaCartas = "                  ";
 
         enum { SUPERIOR, MEDIO, INFERIOR }; // Para mayor claridad con los índices array
         std::vector<std::string> colaCartasJugador[3];

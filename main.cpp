@@ -8,12 +8,12 @@
 #include "Apuesta.h"
 #include <iostream>
 
-void empezarRonda(Vista& vista, const Controlador& controlador, Jugador& jugador, Apuesta& apuesta) {
+void empezarRonda(Vista& vista, const Controlador& controlador, Jugador& jugador, Apuesta& apuesta, const std::string& nombre) {
     Mazo mazo;
     Crupier crupier(mazo, vista);
 
     crupier.empezarNuevaRonda(jugador);
-    vista.mostrarPantallaJuego();
+    vista.mostrarPantallaJuego(nombre, apuesta.getDineroTotal(), apuesta.getApuestaActual(), std::to_string(jugador.getValorDeMano()), std::to_string(crupier.getValorDeMano()));
     std::cin.get();
 }
 
@@ -38,7 +38,7 @@ void prepararNuevaPartida(Vista& vista, const Controlador& controlador, Jugador&
         char opcionApuesta = controlador.getOpcionChar("WQCVB", APUESTA);
         switch (opcionApuesta) {
             case 'W':
-                empezarRonda(vista, controlador, jugador, apuesta);
+                empezarRonda(vista, controlador, jugador, apuesta, nombre);
                 salirDeApuesta = true;
                 break;
             
