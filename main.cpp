@@ -17,7 +17,7 @@ int main() {
     vista.mostrarPantallaPrincipal();
 
     while (true) {
-        int opcion = controlador.obtenerEleccionMenu(1, 5);
+        int opcion = controlador.getOpcionMenuPrincipal(1, 5);
 
         switch (opcion) {
             case 1:
