@@ -44,12 +44,16 @@
 
 #include "Vista.h"
 
+enum Menu { APUESTA, JUEGO };
+
 class Controlador {
     public:
         Controlador(Vista& pVista);
 
-        int obtenerEleccionMenu(int opcionMin, int opcionMax) const;
-        void obtenerAccionJugador() const;
+        int getOpcionMenuPrincipal(int opcionMin, int opcionMax) const;
+        char getOpcionChar(const std::string& opciones, Menu menu) const;
+
+        void limpiarBuffer() const;
 
     private:
         Vista& vista;

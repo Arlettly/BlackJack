@@ -52,18 +52,25 @@ class Vista {
     public:
         Vista();
 
-        void limpiarPantalla() const;
-
+        // Prints
         void mostrarTitulo() const;
         void mostrarMenuPrincipal() const;
         void mostrarMenuApuesta() const;
         void mostrarGameData(const std::string& name, int dinero, int apuesta) const;
-        void mostrarPantallaPrincipal() const;
 
+        // Pantallas
+        void mostrarPantallaPrincipal() const;
+        void mostrarPantallaApuesta() const;
+        void mostrarPantallaJuego();
+        
+        // Utils
+        void solicitarOpcion() const;
         void mostrarTexto(const std::string& texto) const;
         void mostrarTexto(const std::string& texto, const std::string& color) const;
         void mostrarTexto(const std::string& prefijo, const std::string& texto, const std::string& sufijo) const;
+        void limpiarPantalla() const;
 
+        // Cartas
         void añadirCartaACola(Mano mano, const std::string& valor, const std::string& palo, Color colorEnum);
 
         void imprimirCola(const std::vector<std::string>& cola) const;

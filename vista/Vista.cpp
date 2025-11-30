@@ -66,12 +66,20 @@ void Vista::mostrarPantallaPrincipal() const {
     mostrarMenuPrincipal();
 }
 
-void Vista::limpiarPantalla() const {
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
+void Vista::mostrarPantallaApuesta() const {
+    limpiarPantalla();
+    mostrarTitulo();
+    mostrarMenuApuesta();
+}
+
+void Vista::mostrarPantallaJuego() {
+    limpiarPantalla();
+    imprimirMano(CRUPIER);
+    imprimirMano(JUGADOR);
+}
+
+void Vista::solicitarOpcion() const {
+    mostrarTexto(sangria, "Ingrese una opcion: ", "");
 }
 
 void Vista::mostrarTexto(const std::string& texto) const {
@@ -84,6 +92,14 @@ void Vista::mostrarTexto(const std::string& texto, const std::string& color) con
 
 void Vista::mostrarTexto(const std::string& prefijo, const std::string& texto, const std::string& sufijo) const {
     std::cout << prefijo << texto << sufijo;
+}
+
+void Vista::limpiarPantalla() const {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
 }
 
 void Vista::añadirCartaACola(Mano mano, const std::string& valor, const std::string& palo, Color colorEnum) {
