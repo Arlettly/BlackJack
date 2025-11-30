@@ -1,7 +1,9 @@
 #include "Apuesta.h"
 
 Apuesta::Apuesta() 
-    : dineroTotal(dineroInicial), apuestaActual(0.0), dineroInicial(1000.0) {}
+    : dineroTotal(0.0), apuestaActual(0.0), dineroInicial(1000.0) {
+        dineroTotal = dineroInicial;
+    }
 
 bool Apuesta::aumentarApuesta(double cantidad) {
     if (cantidad <= 0) {
