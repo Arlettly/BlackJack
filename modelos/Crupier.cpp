@@ -1,6 +1,6 @@
 #include "Crupier.h"
 
-Crupier::Crupier(Mazo& pMazo, Vista& pVista) : mazo{pMazo}, Participante(pVista) {}
+Crupier::Crupier(Mazo& pMazo, Vista& pVista) : Participante(pVista), mazo{pMazo} {}
 
 void Crupier::empezarNuevaRonda(Jugador& jugador) {
     limpiarMano();
@@ -17,13 +17,13 @@ Carta Crupier::getSiguienteCarta() {
     return mazo.cartasEnMazo[mazo.getIndiceCartaActual()];
 }
 
-void Crupier::darCartaAJugador(Jugador& jugador, size_t cantidad) {
+void Crupier::darCartaAJugador(Jugador& jugador, int cantidad) {
     for (int i = 0; i < cantidad; i++) {
         jugador.recibirCarta(getSiguienteCarta());
     }
 }
 
-void Crupier::darCartaACrupier(size_t cantidad) {
+void Crupier::darCartaACrupier(int cantidad) {
         for (int i = 0; i < cantidad; i++) {
         recibirCarta(getSiguienteCarta());
     }
