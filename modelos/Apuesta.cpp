@@ -17,20 +17,6 @@ bool Apuesta::aumentarApuesta(int cantidad) {
     return false;
 }
 
-bool Apuesta::reducirApuesta(int cantidad) {
-    if (cantidad <= 0) {
-        return false;
-    }
-    
-    if (apuestaActual >= cantidad) {
-        apuestaActual -= cantidad;
-        dineroTotal += cantidad;
-        return true;
-    }
-    
-    return false;
-}
-
 void Apuesta::resetearApuesta() {
     dineroTotal = dineroInicial;
     apuestaActual = 0;
