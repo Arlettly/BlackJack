@@ -50,8 +50,16 @@ void Vista::mostrarMenuApuesta() const {
     std::cout << colReset << std::endl;
 }
 
-void Vista::mostrarMenuAcciones() const {
-    std::cout << "\n"; mostrarTexto("Tomar [T] | Plantarse [P]\n", colNegro);
+void Vista::mostrarMenuAcciones(GameState estado) const {
+    if(estado != NONE) {
+        std::cout << "\n"; mostrarTexto("Desea jugar de nuevo? [S/N]\n", colNegro);
+    }
+
+    else {
+        std::cout << "\n"; mostrarTexto("Tomar [T] | Plantarse [P]\n", colNegro);
+    }
+
+    
 }
 
 void Vista::mostrarGameData(const std::string& nombre, int dinero, int apuesta) const {
@@ -103,7 +111,7 @@ void Vista::mostrarPantallaJuego(const std::string& nombre, int dinero, int apue
     imprimirMano(CRUPIER, valorCrupier);
     mostrarEstado(estado);
     imprimirMano(JUGADOR, valorJugador);
-    mostrarMenuAcciones();
+    mostrarMenuAcciones(estado);
 }
 
 void Vista::solicitarInput(const std::string& mensaje) const {
