@@ -38,7 +38,7 @@
     juan.encarnacion@correounivalle.edu.co
     juan.esteban.mina@correounivalle.edu.co
 
-    @date Fecha: Diciembre 2024
+    @date Fecha: Diciembre 2025
 */
 
 #pragma once
