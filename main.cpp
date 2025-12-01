@@ -8,81 +8,28 @@
 #include "Apuesta.h"
 #include <iostream>
 
-
-// TODO: mover logica de juego a controlador?
-GameState revisarEstadoInicial(Jugador& jugador, Crupier& crupier) {
-    if(crupier.getValorDeMano() > 21)
-    return GANAR;
-
-    else if(crupier.getValorDeMano() == 21)
-    return PERDER;
-
-    else if(jugador.getValorDeMano() > 21)
-    return BUST;
-
-    else if(jugador.getValorDeMano() == 21)
-    return BLACKJACK;
-
-    else if(jugador.getValorDeMano() == crupier.getValorDeMano())
-    return EMPATE; // Revisar si aplica, o solo para blackjack
-
-    else
-    return NONE;
-}
-
-GameState revisarEstadoPlantarse(Jugador& jugador, Crupier& crupier) {
-    if(crupier.getValorDeMano() > 21)
-    return GANAR;
-
-    else if(jugador.getValorDeMano() > crupier.getValorDeMano())
-    return GANAR;
-
-    else if(jugador.getValorDeMano() < crupier.getValorDeMano())
-    return PERDER;
-
-    else if(crupier.getValorDeMano() == 21)
-    return PERDER;
-
-    else if(jugador.getValorDeMano() == crupier.getValorDeMano())
-    return EMPATE;
-
-    else
-    return NONE;
-}
-
-GameState revisarEstadoTomar(Jugador& jugador, Crupier& crupier) {
-    if(jugador.getValorDeMano() > 21)
-    return BUST;
-
-    else if(jugador.getValorDeMano() == 21)
-    return BLACKJACK;
-
-    else if(jugador.getValorDeMano() < 21)
-    return NONE;
-
-    else
-    return NONE;
-}
-
 void empezarRonda(Vista& vista, const Controlador& controlador, Jugador& jugador, Crupier& crupier, Apuesta& apuesta, const std::string& nombre) {
-    crupier.empezarNuevaRonda(jugador);
+    crupier.empezarNuevaRonda();
+    GameState estado = crupier.evaluarEstado();
     vista.mostrarPantallaJuego(nombre, apuesta.getDineroTotal(), apuesta.getApuestaActual(),
                                std::to_string(jugador.getValorDeMano()), std::to_string(crupier.getValorDeMano()),
-                               revisarEstadoInicial(jugador, crupier));
+                               estado);
     char opcionAccion = controlador.getOpcionChar("TP", JUEGO);
     switch (opcionAccion) {
     case 'T':
-        crupier.darCartaAJugador(jugador, 1);
+        crupier.darCartaAJugador(1);
+        estado = crupier.evaluarEstado();
         vista.mostrarPantallaJuego(nombre, apuesta.getDineroTotal(), apuesta.getApuestaActual(),
                                std::to_string(jugador.getValorDeMano()), std::to_string(crupier.getValorDeMano()),
-                               revisarEstadoTomar(jugador, crupier));
+                               estado);
         std::cin.get();
         break;
     
     case 'P':
+        estado = crupier.decidirResultado();
         vista.mostrarPantallaJuego(nombre, apuesta.getDineroTotal(), apuesta.getApuestaActual(),
                                std::to_string(jugador.getValorDeMano()), std::to_string(crupier.getValorDeMano()),
-                               revisarEstadoPlantarse(jugador, crupier));
+                               estado);
         std::cin.get();
         break;
     }
@@ -141,7 +88,7 @@ int main() {
     Mazo mazo;
 
     Jugador jugador(vista);
-    Crupier crupier(mazo, vista);
+    Crupier crupier(mazo, vista, jugador);
     Apuesta apuesta;
     Controlador controlador(vista, jugador, crupier, apuesta);
 

@@ -47,16 +47,21 @@
 
 class Crupier : public Participante {
     public:
-        Crupier(Mazo& pMazo, Vista& pVista);
+        Crupier(Mazo& pMazo, Vista& pVista, Jugador& pJugador);
 
-        void empezarNuevaRonda(Jugador& jugador);
+        void empezarNuevaRonda();
+
         Carta getSiguienteCarta();
-        void darCartaAJugador(Jugador& jugador, int cantidad);
+        void darCartaAJugador(int cantidad);
         void darCartaACrupier(int cantidad);
+
         void jugarTurno();
+        GameState evaluarEstado() const;
+        GameState decidirResultado();
 
         Mano getTipoDeMano() const override { return CRUPIER; }
 
     private:
         Mazo& mazo;
+        Jugador& jugador;
 };
