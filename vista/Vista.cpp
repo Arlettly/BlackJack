@@ -108,9 +108,9 @@ void Vista::mostrarPantallaApuesta(const std::string& nombre, int dinero, int ap
 void Vista::mostrarPantallaJuego(const std::string& nombre, int dinero, int apuesta, const std::string& valorJugador, const std::string& valorCrupier, GameState estado) {
     limpiarPantalla();
     mostrarGameData(nombre, dinero, apuesta);
-    imprimirMano(CRUPIER, valorCrupier);
+    imprimirMano(CRUPIER, estado, valorCrupier);
     mostrarEstado(estado);
-    imprimirMano(JUGADOR, valorJugador);
+    imprimirMano(JUGADOR, estado, valorJugador);
     mostrarMenuAcciones(estado);
 }
 
@@ -154,23 +154,28 @@ void Vista::añadirCartaACola(Mano mano, const std::string& valor, const std::st
         cola[SUPERIOR].push_back("╭" + color + valor + palo + colReset + bordeSup);
         cola[MEDIO].push_back("│    │");
         cola[INFERIOR].push_back(bordeInf + color + valor + palo + colReset + "╯");
+
+        // Copia para la cola de cartas parcial (con segunda carta oculta)
+        if(mano == CRUPIER) {
+            colaParcialCrupier[SUPERIOR].push_back("╭" + color + valor + palo + colReset + bordeSup);
+            colaParcialCrupier[MEDIO].push_back("│    │");
+            colaParcialCrupier[INFERIOR].push_back(bordeInf + color + valor + palo + colReset + "╯");
+        }
     }
 
     else {
-
-        if(mano == JUGADOR) {
-            const std::string bordeInf = esDobleDigito ? "" : "╶";
-
-            cola[SUPERIOR].push_back("╶──╮");
-            cola[MEDIO].push_back("   │");
-            cola[INFERIOR].push_back(bordeInf + color + valor + palo + colReset + "╯");
+        // Añadir cartas ocultas a colaParcialCrupier
+        if(mano == CRUPIER) {
+            colaParcialCrupier[SUPERIOR].push_back("╶──╮");
+            colaParcialCrupier[MEDIO].push_back("///│");
+            colaParcialCrupier[INFERIOR].push_back("╶──╯");
         }
 
-        else {
-            cola[SUPERIOR].push_back("╶──╮");
-            cola[MEDIO].push_back("///│");
-            cola[INFERIOR].push_back("╶──╯");
-        }
+        const std::string bordeInf = esDobleDigito ? "" : "╶";
+
+        cola[SUPERIOR].push_back("╶──╮");
+        cola[MEDIO].push_back("   │");
+        cola[INFERIOR].push_back(bordeInf + color + valor + palo + colReset + "╯");
     }
 }
 
@@ -189,11 +194,12 @@ void Vista::limpiarColas() {
     for (size_t i = 0; i < 3; i++) {
         colaCartasJugador[i].clear();
         colaCartasCrupier[i].clear();
+        colaParcialCrupier[i].clear();
     }
 }
 
-void Vista::imprimirMano(Mano mano, const std::string& valor) {
-    std::vector<std::string> (&cola)[3] = (mano == JUGADOR) ? colaCartasJugador : colaCartasCrupier;
+void Vista::imprimirMano(Mano mano, GameState estado, const std::string& valor) {
+    std::vector<std::string> (&cola)[3] = (mano == JUGADOR) ? colaCartasJugador : ((estado != NONE) ? colaCartasCrupier : colaParcialCrupier);
 
     bool esDobleDigito = (valor.length() > 1);
     const std::string valorConSangria = esDobleDigito ? "                  " : "                   ";
