@@ -157,11 +157,20 @@ void Vista::añadirCartaACola(Mano mano, const std::string& valor, const std::st
     }
 
     else {
-        const std::string bordeInf = esDobleDigito ? "" : "╶";
 
-        cola[SUPERIOR].push_back("╶──╮");
-        cola[MEDIO].push_back("   │");
-        cola[INFERIOR].push_back(bordeInf + color + valor + palo + colReset + "╯");
+        if(mano == JUGADOR) {
+            const std::string bordeInf = esDobleDigito ? "" : "╶";
+
+            cola[SUPERIOR].push_back("╶──╮");
+            cola[MEDIO].push_back("   │");
+            cola[INFERIOR].push_back(bordeInf + color + valor + palo + colReset + "╯");
+        }
+
+        else {
+            cola[SUPERIOR].push_back("╶──╮");
+            cola[MEDIO].push_back("///│");
+            cola[INFERIOR].push_back("╶──╯");
+        }
     }
 }
 
