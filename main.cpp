@@ -6,6 +6,7 @@
 #include "Crupier.h"
 #include "Mazo.h"
 #include "Apuesta.h"
+#include "Serializador.h"
 
 #include <iostream>
 
@@ -127,7 +128,7 @@ bool prepararNuevaPartida(Vista& vista, const Controlador& controlador, Jugador&
             case 'B':
                 if(!apuesta.aumentarApuesta(500))
                 dineroInsuficiente = true;
-                
+
                 else {
                     dineroInsuficiente = false;
                     apuestaExitosa = true;
@@ -158,6 +159,7 @@ int main() {
     Crupier crupier(mazo, vista, jugador);
     Apuesta apuesta;
     Controlador controlador(vista, jugador, crupier, apuesta);
+    Serializador serializador("archivoDeGuardado", vista);
 
     while (true) {
         // Menu principal
@@ -177,7 +179,21 @@ int main() {
                     }
                 }
             } break;
-            case 2:
+            // Cargar partida anterior
+            case 2: {
+                std::pair<std::string, int> datosGuardados = serializador.deserializarDatos();
+                std::string nombre = datosGuardados.first;
+                int dinero = datosGuardados.second;
+
+                if (!nombre.empty() && dinero > 0) {
+                    jugador.setNombre(nombre);
+                    //apuesta.setDineroTotal(dinero);
+
+                    // Texto carga exitosa
+        
+                    std::cin.get();
+                }
+            }
                 break;
             case 3:
                 break;
