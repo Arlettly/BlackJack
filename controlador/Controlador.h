@@ -55,6 +55,7 @@ class Controlador {
 
         int getOpcionInt(int opcionMin, int opcionMax) const;
         char getOpcionChar(const std::string& opciones, Menu menu) const;
+        void esperarInput(const std::string& texto) const;
 
         std::string getNombreJugador(size_t charMin, size_t charMax) const;
 

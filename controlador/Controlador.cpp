@@ -61,6 +61,14 @@ char Controlador::getOpcionChar(const std::string& opciones, Menu menu) const {
     }
 }
 
+void Controlador::esperarInput(const std::string& texto) const {
+    vista.mostrarErrorFullScreen(texto);
+    vista.solicitarInput("Presione cualquier tecla: ");
+    std::cin.get();
+
+    vista.mostrarPantallaPrincipal();
+}
+
 std::string Controlador::getNombreJugador(size_t charMin, size_t charMax) const {
     std::string nombre{};
 

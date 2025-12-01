@@ -75,6 +75,7 @@ class Vista {
         void mostrarTexto(const std::string& texto) const;
         void mostrarTexto(const std::string& texto, const std::string& color) const;
         void mostrarTexto(const std::string& prefijo, const std::string& texto, const std::string& sufijo) const;
+        void mostrarErrorFullScreen(const std::string& texto) const;
         void limpiarPantalla() const;
 
         // Cartas
