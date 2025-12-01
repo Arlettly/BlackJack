@@ -8,43 +8,71 @@
 #include "Apuesta.h"
 #include <iostream>
 
-void empezarRonda(Vista& vista, const Controlador& controlador, Jugador& jugador, Crupier& crupier, Apuesta& apuesta, const std::string& nombre) {
+bool empezarRonda(Vista& vista, const Controlador& controlador, Jugador& jugador, Crupier& crupier, Apuesta& apuesta, const std::string& nombre) {
     crupier.empezarNuevaRonda();
     GameState estado = crupier.evaluarEstado();
-    vista.mostrarPantallaJuego(nombre, apuesta.getDineroTotal(), apuesta.getApuestaActual(),
-                               std::to_string(jugador.getValorDeMano()), std::to_string(crupier.getValorDeMano()),
-                               estado);
-    char opcionAccion = controlador.getOpcionChar("TP", JUEGO);
-    switch (opcionAccion) {
-    case 'T':
-        crupier.darCartaAJugador(1);
-        estado = crupier.evaluarEstado();
+
+    while(estado == NONE) {
         vista.mostrarPantallaJuego(nombre, apuesta.getDineroTotal(), apuesta.getApuestaActual(),
-                               std::to_string(jugador.getValorDeMano()), std::to_string(crupier.getValorDeMano()),
-                               estado);
-        std::cin.get();
+                                std::to_string(jugador.getValorDeMano()), std::to_string(crupier.getValorDeMano()),
+                                estado);
+
+        char opcionAccion = controlador.getOpcionChar("TP", JUEGO);
+
+        // Menu de acciones
+        switch (opcionAccion) {
+        case 'T':
+            crupier.darCartaAJugador(1);
+            estado = crupier.evaluarEstado();
+            break;
+        
+        case 'P':
+            estado = crupier.decidirResultado();
+            break;
+        }
+    }
+
+    // Mostrar resultado del juego
+    vista.mostrarPantallaJuego(nombre, apuesta.getDineroTotal(), apuesta.getApuestaActual(),
+                        std::to_string(jugador.getValorDeMano()), std::to_string(crupier.getValorDeMano()),
+                        estado);
+
+    // Repartir el dinero de acuerdo al resultado
+    if(estado == GANAR || estado == BLACKJACK) apuesta.ganar();
+    if(estado == PERDER || estado == BUST) apuesta.perder();
+    if(estado == EMPATE) apuesta.empatar();
+
+    char opcionFinal = controlador.getOpcionChar("SN", JUEGO);
+
+    switch (opcionFinal) {
+    case 'S':
+        return true;
         break;
     
-    case 'P':
-        estado = crupier.decidirResultado();
-        vista.mostrarPantallaJuego(nombre, apuesta.getDineroTotal(), apuesta.getApuestaActual(),
-                               std::to_string(jugador.getValorDeMano()), std::to_string(crupier.getValorDeMano()),
-                               estado);
-        std::cin.get();
+    default:
+        // Solicitar Guardar partida (cuando se añada)
+        return false;
         break;
     }
 }
 
-void prepararNuevaPartida(Vista& vista, const Controlador& controlador, Jugador& jugador, Crupier& crupier, Apuesta& apuesta) {
+bool prepararNuevaPartida(Vista& vista, const Controlador& controlador, Jugador& jugador, Crupier& crupier, Apuesta& apuesta) {
     vista.limpiarPantalla();
     vista.mostrarTitulo();
 
-    // Sección donde se solicita el nombre al jugador
-    std::string nombre = controlador.getNombreJugador(3, 8);
-    jugador.setNombre(nombre);
+    std::string nombre{};
+
+    // Sección donde se solicita el nombre al jugador (Si no lo ha hecho antes)
+    if(jugador.getNombre() == "") {
+        std::string nombre = controlador.getNombreJugador(3, 8);
+        jugador.setNombre(nombre);
+    }
+
+    nombre = jugador.getNombre();
 
     bool salirDeApuesta{};
     bool dineroInsuficiente{};
+    bool apuestaExitosa = true;
     
     // Menu de apuesta
     do {
@@ -52,35 +80,48 @@ void prepararNuevaPartida(Vista& vista, const Controlador& controlador, Jugador&
 
         if(dineroInsuficiente)
         vista.mostrarTexto("Dinero insuficiente", "\e[1;31m");
+
+        if(!apuestaExitosa)
+        vista.mostrarTexto("Debes apostar algo", "\e[1;31m");
         
         char opcionApuesta = controlador.getOpcionChar("WQCVB", APUESTA);
         switch (opcionApuesta) {
             case 'W':
-                empezarRonda(vista, controlador, jugador, crupier, apuesta, nombre);
+                if(apuesta.getApuestaActual() == 0) {
+                    apuestaExitosa = false;
+                    break;
+                }
                 salirDeApuesta = true;
+                apuestaExitosa = true;
                 break;
             
             case 'C':
                 if(!apuesta.aumentarApuesta(100))
                 dineroInsuficiente = true;
+                apuestaExitosa = true;
                 break;
 
             case 'V':
                 if(!apuesta.aumentarApuesta(250))
                 dineroInsuficiente = true;
+                apuestaExitosa = true;
                 break;
 
             case 'B':
                 if(!apuesta.aumentarApuesta(500))
                 dineroInsuficiente = true;
+                apuestaExitosa = true;
                 break;
 
             case 'Q':
                 apuesta.resetearApuesta();
                 salirDeApuesta = true;
+                apuestaExitosa = false;
                 break;
         }
     } while (!salirDeApuesta);
+
+    return apuestaExitosa;
 }
 
 int main() {
@@ -98,9 +139,20 @@ int main() {
         int opcion = controlador.getOpcionInt(1, 5);
 
         switch (opcion) {
-            case 1:
-                prepararNuevaPartida(vista, controlador, jugador, crupier, apuesta);
-                break;
+            // Empezar nueva partida
+            case 1: {
+                jugador.setNombre(""); // Estar en el menu principal implica reiniciar el nombre
+                
+                bool jugando = true;
+                while(jugando) {
+                    if(prepararNuevaPartida(vista, controlador, jugador, crupier, apuesta)){
+                        jugando = empezarRonda(vista, controlador, jugador, crupier, apuesta, jugador.getNombre());
+                    }
+                    else {
+                        jugando = false;
+                    }
+                }
+            } break;
             case 2:
                 break;
             case 3:

@@ -41,6 +41,7 @@ GameState Crupier::evaluarEstado() const {
     int valorCrupier = getValorDeMano();
 
     // Casos de bust por ambas partes
+    if(valorJugador > 21 && valorCrupier > 21) return EMPATE;
     if(valorJugador > 21) return BUST;
     if(valorCrupier > 21) return GANAR;
 
@@ -55,15 +56,15 @@ GameState Crupier::evaluarEstado() const {
 }
 
 GameState Crupier::decidirResultado() {
-    int valorJugador = jugador.getValorDeMano();
-    int valorCrupier = getValorDeMano();
     jugarTurno();
+    int valorCrupier = getValorDeMano();
+    int valorJugador = jugador.getValorDeMano();
 
     if(valorCrupier > 21) return GANAR;
     if(valorCrupier == 21) return PERDER;
 
-    if(valorJugador > getValorDeMano()) return GANAR;
-    if(valorJugador < getValorDeMano()) return PERDER;
+    if(valorJugador > valorCrupier) return GANAR;
+    if(valorJugador < valorCrupier) return PERDER;
 
     return EMPATE;
 }

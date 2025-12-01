@@ -11,6 +11,7 @@ void Participante::recibirCarta(const Carta& carta) {
 
 void Participante::limpiarMano() {
     mano.clear();
+    vista.limpiarColas();
 }
 
 void Participante::ajustarMano() {
