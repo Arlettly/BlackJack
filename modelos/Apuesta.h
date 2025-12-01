@@ -44,7 +44,6 @@ class Apuesta {
         Apuesta();
 
         bool aumentarApuesta(int cantidad);
-        bool reducirApuesta(int cantidad);
         void resetearApuesta();
 
         void ganar();
