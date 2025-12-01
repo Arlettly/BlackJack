@@ -135,6 +135,13 @@ void Vista::mostrarTexto(const std::string& prefijo, const std::string& texto, c
     std::cout << prefijo << texto << sufijo;
 }
 
+void Vista::mostrarErrorFullScreen(const std::string& texto) const {
+    limpiarPantalla();
+    std::cout << "\n\n\n\n\n";
+    std::cout << sangriaCartas; mostrarTexto(texto, colRojo);
+    std::cout << "\n\n";
+}
+
 void Vista::limpiarPantalla() const {
     #ifdef _WIN32
         system("cls");

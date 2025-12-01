@@ -197,7 +197,7 @@ int main() {
     Crupier crupier(mazo, vista, jugador);
     Apuesta apuesta;
     Controlador controlador(vista, jugador, crupier, apuesta);
-    Serializador serializador("archivoDeGuardado", vista);
+    Serializador serializador("archivoDeGuardado", vista, controlador);
 
     while (true) {
         // Menu principal
@@ -218,8 +218,6 @@ int main() {
                 if (!nombre.empty() && dinero > 0) {
                     jugador.setNombre(nombre);
                     apuesta.setDineroTotal(dinero);
-                    
-                    // Texto carga exitosa
 
                     cicloJuego(vista, controlador, jugador, crupier, apuesta, serializador);
                 }
