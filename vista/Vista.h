@@ -83,7 +83,7 @@ class Vista {
         bool esColaVacia(std::vector<std::string> (&cola)[3]) const;
         void limpiarColas();
 
-        void imprimirMano(Mano mano, const std::string& valor);
+        void imprimirMano(Mano mano, GameState estado, const std::string& valor);
 
     private:
         // Colores ANSI
@@ -99,4 +99,5 @@ class Vista {
         enum { SUPERIOR, MEDIO, INFERIOR }; // Para mayor claridad con los índices array
         std::vector<std::string> colaCartasJugador[3];
         std::vector<std::string> colaCartasCrupier[3];
+        std::vector<std::string> colaParcialCrupier[3];
 };
